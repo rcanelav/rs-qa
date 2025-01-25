@@ -27,3 +27,6 @@ docker-build-and-run:
 
 requirements:
 	uv pip compile pyproject.toml -o requirements.txt
+
+tests:
+	python -m pytest --cov=src --cov-report=term-missing
