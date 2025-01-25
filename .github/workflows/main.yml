@@ -1,0 +1,23 @@
+name: Run tests and deploy
+
+on:
+    push:
+        branches:
+            - 'main'
+    pull_request:
+        branches:
+            - '*'
+    workflow_dispatch:
+
+jobs:
+    base:
+        uses: ./.github/workflows/_base.yml
+        secrets: inherit
+
+    deploy:
+        needs: [base]
+        uses: ./.github/workflows/_deploy.yml
+        secrets: inherit
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch')
+        with:
+            environment: ${{ startsWith(github.ref, 'refs/heads/main') && 'dev'}}
