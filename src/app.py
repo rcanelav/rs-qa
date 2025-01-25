@@ -69,7 +69,7 @@ async def question_answering(request: QuestionAnswerRequest) -> dict:
         error_message = f"Error occurred: {str(e)}"
         logger.error(error_message)
         raise HTTPException(
-            status_code=500, detail=error_message)
+            status_code=500, detail=error_message) from e
 
 
 @app.get("/health")
