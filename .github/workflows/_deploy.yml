@@ -1,0 +1,53 @@
+on:
+    workflow_call:
+        inputs:
+            environment:
+                description: environment to deploy to
+                required: true
+                type: string
+
+#Special permissions required for OIDC authentication
+permissions:
+    id-token: write
+    contents: read
+
+env:
+    WIP: 'WIP'
+
+jobs:
+    generate-image-tags:
+        runs-on: ubuntu-latest
+        outputs:
+          IMAGE_TAG: ${{ steps.generate-image-tag.outputs.image_tag }}
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+
+          - name: Generate image tag
+            id: generate-image-tag
+            run: |
+                LAST_COMMIT_HASH=$(git log --no-merges -n 1 --pretty=format:"%h")
+                echo "Last non-merge commit hash: $LAST_COMMIT_HASH"
+
+                # Extract the branch name from GITHUB_REF
+                BRANCH_NAME=${GITHUB_REF#refs/heads/}
+                echo "Branch Name: $BRANCH_NAME"
+
+                echo "image_tag=$LAST_COMMIT_HASH-$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+    deploy:
+        runs-on: ubuntu-latest
+        needs: [generate-image-tags]
+        permissions:
+            id-token: write
+            contents: read
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+
+          - name: Deploy to environment
+            env:
+                IMAGE_TAG: ${{ needs.generate-image-tags.outputs.IMAGE_TAG }}
+            run: |
+                echo "Generating images..."
+                docker build -t rs-interview:$IMAGE_TAG .
