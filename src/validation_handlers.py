@@ -20,7 +20,11 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     """
     # Log the validation error details
     logger.error(
-        f"Validation error on {request.url.path}: {exc.errors()} - Input: {exc.body}")
+        "Validation error on %s: %s - Input: %s",
+        request.url.path,
+        exc.errors(),
+        exc.body
+    )
 
     return JSONResponse(
         status_code=400,
