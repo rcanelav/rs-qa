@@ -1,8 +1,10 @@
 import json
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
+from botocore.exceptions import ClientError, NoCredentialsError
+
 from src.bedrock_service import BedrockService
-from botocore.exceptions import NoCredentialsError, ClientError
 
 
 class TestBedrockService:
@@ -24,7 +26,8 @@ class TestBedrockService:
         service = BedrockService(region=self.region)
 
         # Assert
-        mock_boto3_client.assert_called_once_with("bedrock-runtime", region_name=self.region)
+        mock_boto3_client.assert_called_once_with(
+            "bedrock-runtime", region_name=self.region)
         assert service.client is not None
 
     def test_initialize_client_no_credentials(self, mock_boto3_client):
@@ -39,10 +42,12 @@ class TestBedrockService:
     def test_initialize_client_generic_error(self, mock_boto3_client):
         """Test initialization failure due to a generic exception."""
         # Arrange
-        mock_boto3_client.side_effect = Exception("Mocked initialization error")
+        mock_boto3_client.side_effect = Exception(
+            "Mocked initialization error")
 
         # Act & Assert
-        with pytest.raises(RuntimeError, match="🟥 Failed to initialize AWS Bedrock client. Cause: Mocked initialization error"):
+        with pytest.raises(RuntimeError,
+                           match="🟥 Failed to initialize AWS Bedrock client. Cause: Mocked initialization error"):
             BedrockService(region=self.region)
 
     def test_invoke_model_success(self, mock_boto3_client):
@@ -74,7 +79,8 @@ class TestBedrockService:
         mock_boto3_client.return_value = MagicMock()
         mock_client_instance = mock_boto3_client.return_value
         mock_client_instance.invoke_model.side_effect = ClientError(
-            error_response={"Error": {"Code": "MockError", "Message": "Mocked AWS ClientError"}},
+            error_response={"Error": {"Code": "MockError",
+                                      "Message": "Mocked AWS ClientError"}},
             operation_name="InvokeModel"
         )
 
@@ -91,7 +97,8 @@ class TestBedrockService:
         # Arrange
         mock_boto3_client.return_value = MagicMock()
         mock_client_instance = mock_boto3_client.return_value
-        mock_client_instance.invoke_model.side_effect = Exception("Mocked invocation error")
+        mock_client_instance.invoke_model.side_effect = Exception(
+            "Mocked invocation error")
 
         service = BedrockService(region=self.region)
         model_id = "mock-model-id"
