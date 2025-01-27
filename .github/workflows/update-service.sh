@@ -8,7 +8,7 @@ ECS_SERVICE=$5
 
 ECS_CLUSTER="$APP_NAME-cluster"
 TASK_FAMILY="$APP_NAME-task"
-NEW_IMAGE="$REPO/$ECS_SERVICE:$TAG"
+NEW_IMAGE="$REPO:$TAG"
 
 # 1. Describe the current task definition to get the current container definition
 CURRENT_TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_FAMILY" --region "$AWS_REGION" --output json)
