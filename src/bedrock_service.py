@@ -1,8 +1,13 @@
 import json
+import logging
 import os
 
 import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
+
+from src.utils.elapsed_time import elapsed_time
+
+logger = logging.getLogger("BEDROCK_SERVICE")
 
 
 class BedrockService:
@@ -24,6 +29,7 @@ class BedrockService:
             raise RuntimeError(
                 f"🟥 Failed to initialize AWS Bedrock client. Cause: {e}") from e
 
+    @elapsed_time(lambda: "BEDROCK MODEL INVOCATION")
     def invoke_model(self, model_id, payload):
         """Invoke a Bedrock model with the given payload.
 
