@@ -23,11 +23,13 @@ class BedrockService:
         try:
             return boto3.client("bedrock-runtime", region_name=self.region)
         except NoCredentialsError as e:
-            raise RuntimeError(
-                "🟥 Invalid AWS credentials. Please configure AWS credentials.") from e
+            message = "🟥 Invalid AWS credentials. Please configure AWS credentials."
+            logger.error(f"🟥 {message}: {e}")
+            raise RuntimeError(message) from e
         except Exception as e:
-            raise RuntimeError(
-                f"🟥 Failed to initialize AWS Bedrock client. Cause: {e}") from e
+            message = f"🟥 Failed to initialize AWS Bedrock client. Cause: {e}"
+            logger.error(message)
+            raise RuntimeError(message) from e
 
     @elapsed_time(lambda: "BEDROCK MODEL INVOCATION")
     def invoke_model(self, model_id, payload):
@@ -51,8 +53,10 @@ class BedrockService:
             response_body = response["body"].read().decode("utf-8")
             return json.loads(response_body)
         except ClientError as e:
-            raise RuntimeError(
-                f"🟥 Failed to invoke model {model_id}. AWS error: {e}") from e
+            message = f"🟥 Failed to invoke model {model_id}. AWS error: {e}"
+            logger.error(message)
+            raise RuntimeError(message) from e
         except Exception as e:
-            raise RuntimeError(
-                f"🟥 Unexpected error during model invocation: {e}") from e
+            message = f"🟥 Unexpected error during model invocation: {e}"
+            logger.error(message)
+            raise RuntimeError(message) from e
