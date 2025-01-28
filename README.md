@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>AI-Powered Question Answering Application</title>
-</head>
-<body>
-
 <h1 id="ai-powered-question-answering-application">🏡AI-Powered Question Answering Application</h1>
 
 <h2 id="table-of-contents">📙<strong>Table of Contents</strong></h2>
@@ -54,6 +47,13 @@
 
 <p>The repository includes a fully automated CI/CD pipeline that ensures code quality, builds and pushes a <strong>Docker image</strong>, and deploys the application to <strong>AWS ECS</strong>.</p>
 
+<p>💡If you want to try it out the deployed version, execute the following command</p>
+<pre><code>curl -X POST \
+     -H "Content-Type: application/json" \
+     -d '{"question": "Where is the capital of France?"}' \
+     http://app-alb-1578298349.eu-west-2.elb.amazonaws.com/predict
+</code></pre>
+
 <div style="text-align: right;">
   <a href="#table-of-contents">Go to Top</a>
 </div>
@@ -96,8 +96,7 @@
 <ol>
     <li>Clone the repository:
         <pre><code>git clone git@github.com:rcanelav/rs-qa.git
-cd rs-qa
-        </code></pre>
+cd rs-qa</code></pre>
     </li>
     <li>Install dependencies:
         <pre><code>make install</code></pre>
@@ -143,12 +142,12 @@ cd rs-qa
 <h4 id="response">Response</h4>
 <p><strong>Success (200)</strong>:</p>
 <pre><code>{
-  "answer": "The capital of France is Paris."
+  "response": "The capital of France is Paris."
 }
 </code></pre>
 <p><strong>Error (4xx/5xx)</strong>:</p>
 <pre><code>{
-  "error": "Error message."
+  "message": "Error message."
 }
 </code></pre>
 
@@ -168,7 +167,7 @@ cd rs-qa
 </ol>
 
 <h3 id="pipeline-trigger">Pipeline Trigger</h3>
-<p>The pipeline runs automatically on every push to the <code>main</code> branch.</p>
+<p>The pipeline runs automatically on every push to the <code>main</code> branch or executing a <code>workflow_dispatch</code></p>
 
 <div style="text-align: right;">
   <a href="#table-of-contents">Go to Top</a>
