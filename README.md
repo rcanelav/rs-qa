@@ -15,7 +15,7 @@
             </li>
             <li><a href="#api-documentation">📚<strong>API Documentation</strong></a>
                 <ul>
-                    <li><a href="#endpoint-answer">Endpoint: <code>/answer</code></a>
+                    <li><a href="#endpoint-answer">Endpoint: <code>/predict</code></a>
                         <ul>
                             <li><a href="#request">Request</a></li>
                             <li><a href="#response">Response</a></li>
