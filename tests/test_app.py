@@ -1,7 +1,9 @@
 import os
-import pytest
 from unittest.mock import patch
+
+import pytest
 from fastapi.testclient import TestClient
+
 from src.app import app
 
 
@@ -59,6 +61,15 @@ class TestQuestionAnsweringApplication:
                 ],
             },
         )
+
+    def test_question_with_empty_field(self, client):
+        """Test the /predict endpoint for an empty question field."""
+        # Act
+        response = client.post("/predict", json={"question": " "})
+        # Assert
+        assert response.status_code == 400
+        assert response.json().get(
+            "message") == "Value error, Question cannot be empty. Please check your request and try again."
 
     def test_question_answering_validation_error(self, client):
         """Test the /predict endpoint for validation errors."""
