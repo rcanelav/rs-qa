@@ -199,7 +199,7 @@ cd rs-qa</code></pre>
         <pre><code>make docker-build-no-cache</code></pre>
     </li>
     <li>Run container
-        <pre><code>make run</code></pre>
+        <pre><code>make docker-run</code></pre>
     </li>
 </ol>
 
