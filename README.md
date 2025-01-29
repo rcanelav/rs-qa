@@ -47,6 +47,8 @@
 
 <p>The repository includes a fully automated CI/CD pipeline that ensures code quality, builds and pushes a <strong>Docker image</strong>, and deploys the application to <strong>AWS ECS</strong>.</p>
 
+<p>👀 To access the infrastructure repository, please visit the following link: <a href="https://github.com/rcanelav/rs-infra"><strong>RapidScale Application Interview Repository</strong></a></p>
+
 <p>💡If you want to try it out the deployed version, execute the following command</p>
 <pre><code>curl -X POST \
      -H "Content-Type: application/json" \
@@ -236,4 +238,5 @@ cd rs-qa</code></pre>
 
 <hr>
 <br>
-<i>Thank you for reading. 🚀</i>
+<p>👀 To access the infrastructure repository, please visit the following link: <a href="https://github.com/rcanelav/rs-infra"><strong>RapidScale Application Interview Repository</strong></a></p>
+<i>Thanks for reading! 🚀</i>
